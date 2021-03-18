@@ -11,7 +11,7 @@ import (
 func HandleRand(command string) string {
 	spaced_words := strings.Split(command, " ")
 	if len(spaced_words) == 2 {
-		max, err := strconv.ParseInt(strings.Split(command, " ")[1], 10, 64)
+		max, err := strconv.ParseInt(spaced_words[1], 10, 64)
 		if err != nil {
 			fmt.Println(err)
 			return "rand argument must be integer"
