@@ -68,21 +68,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	fmt.Println(m.Author.String() + ": " + m.Content)
 	// If the message is "ping" reply with "Pong!"
-	if m.Content == "ping" {
+	if m.Content == "!ping" {
 		s.ChannelMessageSend(m.ChannelID, "Pong!")
 	}
 
 	// If the message is "pong" reply with "Ping!"
-	if m.Content == "pong" {
+	if m.Content == "!pong" {
 		s.ChannelMessageSend(m.ChannelID, "Ping!")
-	}
-
-	if m.Content == "time" {
-		s.ChannelMessageSend(m.ChannelID, "<@!"+m.Author.ID+"> "+fmt.Sprint(time.Now()))
-	}
-
-	if strings.Contains(strings.ToLower(m.Content), "uwu") {
-		s.ChannelMessageSend(m.ChannelID, "<@!"+m.Author.ID+"> "+"🥺")
 	}
 
 	if strings.HasPrefix(m.Content, "j!rand") {
@@ -98,6 +90,33 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 		} else {
 			s.ChannelMessageSend(m.ChannelID, "!rand requires one, and only one argument")
+		}
+	}
+
+	if strings.HasPrefix(m.Content, "!roll") {
+		spaced_words := strings.Split(m.Content, " ")
+		if len(spaced_words) == 2 {
+			spaced_nums := strings.Split(spaced_words[1], "d")
+			num_dice, err := strconv.ParseInt(spaced_nums[0], 10, 64)
+			if err != nil {
+				s.ChannelMessageSend(m.ChannelID, "number of dice must be integer")
+			}
+			dice_size, err2 := strconv.ParseInt(spaced_nums[1], 10, 64)
+			if err2 != nil {
+				s.ChannelMessageSend(m.ChannelID, "dice size must be integer")
+			}
+			message := "**" + spaced_words[1] + "**: "
+			total := 0
+			for i := 0; i < int(num_dice); i++ {
+				rand.Seed(time.Now().UnixNano())
+				roll := rand.Int()%int(dice_size) + 1
+				message += fmt.Sprint(roll) + " "
+				total += roll
+			}
+			message += "; " + fmt.Sprint(total)
+			s.ChannelMessageSend(m.ChannelID, message)
+		} else {
+			s.ChannelMessageSend(m.ChannelID, "!roll requires one argument such as 2d6")
 		}
 	}
 }
