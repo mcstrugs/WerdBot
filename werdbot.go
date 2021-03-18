@@ -105,7 +105,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			if err2 != nil {
 				s.ChannelMessageSend(m.ChannelID, "dice size must be integer")
 			}
-			message := "**" + spaced_words[1] + "**: "
+			message := ":game_die:\n**" + spaced_words[1] + "**: "
 			total := 0
 			for i := 0; i < int(num_dice); i++ {
 				rand.Seed(time.Now().UnixNano())
@@ -113,7 +113,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				message += fmt.Sprint(roll) + " "
 				total += roll
 			}
-			message += "; " + fmt.Sprint(total)
+			message += "\n	**Total**: " + fmt.Sprint(total)
 			s.ChannelMessageSend(m.ChannelID, message)
 		} else {
 			s.ChannelMessageSend(m.ChannelID, "!roll requires one argument such as 2d6")
