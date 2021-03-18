@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/mcstrugs/WerdBot/roll"
+	"github.com/mcstrugs/WerdBot/util"
 )
 
 // Variables used for command line parameters
@@ -95,6 +95,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.HasPrefix(m.Content, "!roll") {
-		s.ChannelMessageSend(m.ChannelID, roll.HandleRoll(m.Content))
+		s.ChannelMessageSend(m.ChannelID, util.HandleRoll(m.Content))
 	}
 }
