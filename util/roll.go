@@ -28,12 +28,20 @@ func HandleRoll(roll_str string) string {
 		for i := 0; i < int(num_dice)-1; i++ {
 			rand.Seed(time.Now().UnixNano())
 			roll := rand.Int()%int(dice_size) + 1
-			message += fmt.Sprint(roll) + ", "
+			if roll == int(dice_size) || roll == 1 {
+				message += "**" + fmt.Sprint(roll) + "**, "
+			} else {
+				message += fmt.Sprint(roll) + ", "
+			}
 			total += roll
 		}
 		rand.Seed(time.Now().UnixNano())
 		roll := rand.Int()%int(dice_size) + 1
-		message += fmt.Sprint(roll)
+		if roll == int(dice_size) || roll == 1 {
+			message += "**" + fmt.Sprint(roll) + "**, "
+		} else {
+			message += fmt.Sprint(roll)
+		}
 		total += roll
 
 		message += ")\n**Total**: " + fmt.Sprint(total)
