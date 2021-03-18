@@ -115,5 +115,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-werdbot
 runbot.sh
+WerdBot

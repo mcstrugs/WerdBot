@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/mcstrugs/WerdBot/roll"
 )
 
 // Variables used for command line parameters
@@ -94,29 +95,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if strings.HasPrefix(m.Content, "!roll") {
-		spaced_words := strings.Split(m.Content, " ")
-		if len(spaced_words) == 2 {
-			spaced_nums := strings.Split(spaced_words[1], "d")
-			num_dice, err := strconv.ParseInt(spaced_nums[0], 10, 64)
-			if err != nil {
-				s.ChannelMessageSend(m.ChannelID, "number of dice must be integer")
-			}
-			dice_size, err2 := strconv.ParseInt(spaced_nums[1], 10, 64)
-			if err2 != nil {
-				s.ChannelMessageSend(m.ChannelID, "dice size must be integer")
-			}
-			message := ":game_die:\n**" + spaced_words[1] + "**: "
-			total := 0
-			for i := 0; i < int(num_dice); i++ {
-				rand.Seed(time.Now().UnixNano())
-				roll := rand.Int()%int(dice_size) + 1
-				message += fmt.Sprint(roll) + " "
-				total += roll
-			}
-			message += "\n	**Total**: " + fmt.Sprint(total)
-			s.ChannelMessageSend(m.ChannelID, message)
-		} else {
-			s.ChannelMessageSend(m.ChannelID, "!roll requires one argument such as 2d6")
-		}
+		s.ChannelMessageSend(m.ChannelID, roll.HandleRoll(m.Content))
 	}
 }
