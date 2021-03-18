@@ -86,4 +86,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if strings.HasPrefix(m.Content, "!base32") {
 		s.ChannelMessageSend(m.ChannelID, "<@"+m.Author.ID+">\n"+util.HandleBase32(m.Content))
 	}
+
+	if strings.HasPrefix(m.Content, "!book") {
+		util.HandleBook(m.Content, s, m)
+	}
 }
