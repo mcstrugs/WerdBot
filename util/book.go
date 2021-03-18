@@ -35,5 +35,5 @@ func HandleBook(command string, s *discordgo.Session, m *discordgo.MessageCreate
 		return
 	}
 
-	s.ChannelFileSend(m.ChannelID, spaced_words[1], r)
+	s.ChannelFileSend(m.ChannelID, book, r)
 }
